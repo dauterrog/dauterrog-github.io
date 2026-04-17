@@ -8,29 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* ============================================================
-       КАК ДОБАВИТЬ ВАШИ ФОТОГРАФИИ
-       ============================================================
-
-       ПРОСТОЙ СПОСОБ:
-       1. Просто положи фотографии в ту же папку, что и этот файл.
-       2. Назови их photo1.jpg, photo2.jpg, photo3.jpg и так далее.
-       3. Сайт автоматически покажет все найденные фотографии!
-
-       Совет: Чтобы изменить подпись к фото, найди в секции <script>
-       блок "DYNAMIC PHOTOS" и измени строку `const caption = `Фото ${i}`;`
-       Например, на `const caption = `Мое фото ${i}`;`
-       Или, если ты знаешь, сколько у тебя фото, можно добавить массив
-       `const captions = ["Моё первое фото", "Наш закат", "Наш отпуск"];`
-       и использовать `const caption = captions[i-1] || `Фото ${i}`;`
-       (помни, что массивы начинаются с 0, поэтому `i-1` для первого фото).
-
-       ПУБЛИКАЦИЯ В ИНТЕРНЕТЕ (чтобы отправить ссылку):
-       1. Зайди на netlify.com/drop
-       2. Перетащи этот HTML файл (или папку с фото) на страницу
-       3. Получи ссылку — готово! Бесплатно и за 30 секунд.
-       ============================================================ */
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -337,11 +314,6 @@
   <div class="scroll-hint reveal"><span>листай</span><div class="scroll-arrow"></div></div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     ФОТОГРАФИИ
-     Просто положи photo1.jpg, photo2.jpg и т.д.
-     в ту же папку. JavaScript сделает остальное!
-═══════════════════════════════════════════ -->
 <section class="sec-wrap photos-bg">
   <div class="sec-label reveal">воспоминания</div>
   <div class="sec-title reveal">Нашимоменты</div>
