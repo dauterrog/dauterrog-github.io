@@ -376,18 +376,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     НАША ИСТОРИЯ
-═══════════════════════════════════════════ -->
-<section class="sec-wrap">
-  <div class="sec-label reveal">с того самого дня</div>
-  <div class="sec-title reveal">Наша история</div>
-  <div class="tl-inner" id="timeline"></div>
-</section>
 
-<!-- ═══════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer-ring reveal">♥</div>
   <div class="footer-text reveal">сделано с любовью специально для тебя</div>
@@ -413,29 +402,6 @@
   });
 
   // ── TIMELINE ──
-  const events = [
-    { d: '6 июля',      e: 'Познакомились',                          n: 'С этого дня всё изменилось.',                      s: false },
-    { d: '9 июля',      e: 'Первая прогулка',                        n: 'Тогда я понял, что не смогу без тебя жить.',       s: true  },
-    { d: '10 июля',     e: 'Первый поцелуй',                         n: 'Момент, который я запомню навсегда.',               s: true  },
-    { d: '1 октября',   e: 'Первая ночёвка',                         n: 'Тогда я почувствовал, что значит быть дома.',      s: false },
-    { d: '12 ноября',   e: 'Ты познакомилась с моими родителями',    n: 'Они сразу тебя полюбили.',                         s: false },
-    { d: '31 декабря',  e: 'Встретили Новый год с твоими родителями',n: 'Лучший Новый год в моей жизни.',                   s: false },
-    { d: '19 апреля',   e: 'Твой день рождения — сегодня',           n: 'И я так рад, что ты есть.',                        s: true  },
-  ];
-
-  document.getElementById('timeline').innerHTML = events.map((e, i) => `
-    <div class="tl-item reveal" style="transition-delay:${i * 0.09}s">
-      <div class="tl-spine">
-        <div class="tl-orb ${e.s ? 's' : 'n'}"></div>
-        ${i < events.length - 1 ? '<div class="tl-vline"></div>' : ''}
-      </div>
-      <div>
-        <div class="tl-date">${e.d}</div>
-        <div class="tl-event">${e.e}</div>
-        <div class="tl-note">${e.n}</div>
-      </div>
-    </div>
-  `).join('');
 
   // ── SCROLL REVEAL ──
   const io = new IntersectionObserver(entries => {
