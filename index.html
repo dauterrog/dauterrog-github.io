@@ -6,302 +6,290 @@
   <title>С днём рождения, Дашуля! 🌸</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Округлый и мягкий шрифт Comfortaa -->
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
+    
     :root {
       --pink: #ff80d0;
       --purple: #a050e0;
-      --glass-bg: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.12);
-      --text-main: #f0e8ff;
-      --text-muted: #b090c8;
-      --bg: #08000a;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --bg: #0a000d;
     }
 
     body {
       font-family: 'Comfortaa', sans-serif;
-      background: var(--bg);
-      color: var(--text-main);
+      background-color: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
+      min-height: 100vh;
     }
 
-    /* ── ИНТЕРАКТИВНЫЙ ФОН (FLOATING LINES) ── */
-    #canvas-container {
+    /* ── ФОН (Floating Lines) ── */
+    #bg-canvas {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #1a0025 0%, #0a000d 100%);
     }
-    canvas { display: block; }
 
-    /* ── SCROLL REVEAL ── */
+    /* ── АНИМАЦИЯ ПОЯВЛЕНИЯ ── */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* ── HERO ── */
     .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 0 24px;
-      position: relative; z-index: 1;
-    }
-    .hero-eyebrow {
-      font-size: 12px; letter-spacing: 5px;
-      text-transform: uppercase; color: var(--pink);
-      margin-bottom: 20px; font-weight: 500;
+      padding: 0 20px;
     }
     .hero-name {
-      font-size: clamp(50px, 15vw, 100px);
-      font-weight: 700; line-height: 1.1;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #fff 0%, var(--pink) 50%, var(--purple) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 20px rgba(255, 128, 208, 0.3));
+      font-size: clamp(45px, 12vw, 90px);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, var(--pink), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 15px rgba(255, 128, 208, 0.3));
     }
     .hero-sub {
-      font-size: clamp(16px, 4vw, 24px);
-      color: var(--text-muted); font-weight: 300;
+      font-size: clamp(14px, 4vw, 20px);
+      color: var(--pink);
+      letter-spacing: 2px;
+      opacity: 0.8;
     }
 
     /* ── ГАЛЕРЕЯ (ЖИДКОЕ СТЕКЛО) ── */
-    .sec-wrap { position: relative; z-index: 1; padding: 100px 20px; }
-    .sec-title {
-      font-size: clamp(28px, 6vw, 42px); font-weight: 600;
-      text-align: center; margin-bottom: 50px; color: #fff;
+    .section {
+      padding: 100px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    .photos-grid {
-      display: grid; gap: 20px;
-      max-width: 1000px; margin: 0 auto;
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 50px;
+    }
+    .grid {
+      display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
     }
-    .photo-card {
-      position: relative;
-      border-radius: 30px;
-      padding: 12px;
-      background: var(--glass-bg);
+    .glass-card {
+      background: var(--glass);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: transform 0.4s ease;
-      overflow: hidden;
-    }
-    .photo-card:hover { transform: translateY(-10px) scale(1.02); }
-    .photo-card img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      border-radius: 22px;
-      /* Эффект стекла поверх фото */
-      filter: contrast(1.1) brightness(0.9);
-    }
-    
-    /* Дополнительный слой блеска на стекле */
-    .photo-card::after {
-      content: '';
-      position: absolute; inset: 0;
-      border-radius: 30px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    /* ── ПИСЬМО (ЖИДКОЕ СТЕКЛО) ── */
-    .letter-card {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: 40px;
-      padding: clamp(30px, 8vw, 60px);
-      max-width: 700px; margin: 0 auto;
+      border-radius: 35px;
+      padding: 15px;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      overflow: hidden;
+      transition: transform 0.4s ease;
     }
-    .letter-text {
-      font-size: clamp(16px, 4vw, 20px);
-      line-height: 1.8; color: #fff; font-weight: 300;
+    .glass-card:hover {
+      transform: scale(1.03);
+      border-color: rgba(255, 128, 208, 0.4);
     }
-    .letter-sign {
-      margin-top: 40px;
-      font-size: 28px; font-weight: 600;
-      background: linear-gradient(to right, var(--pink), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    .glass-card img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 25px;
     }
 
-    /* ── FOOTER ── */
+    /* ── ПИСЬМО ── */
+    .letter {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: clamp(30px, 7vw, 60px);
+      border-radius: 40px;
+      max-width: 700px;
+      margin: 50px auto;
+      line-height: 1.8;
+    }
+    .letter p {
+      font-size: clamp(16px, 4.5vw, 19px);
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+    .signature {
+      font-size: 24px;
+      color: var(--pink);
+      font-weight: 700;
+      margin-top: 30px;
+    }
+
     .footer {
-      padding: 80px 20px; text-align: center;
-      position: relative; z-index: 1;
-      font-size: 14px; letter-spacing: 2px; color: var(--text-dim);
+      text-align: center;
+      padding: 60px;
+      font-size: 12px;
+      opacity: 0.4;
+      letter-spacing: 3px;
     }
 
-    /* Убираем лишние элементы, оставляем чистоту */
-    .scroll-hint {
-      position: absolute; bottom: 40px;
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-      opacity: 0.5;
+    .scroll-down {
+      position: absolute;
+      bottom: 30px;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-10px);}
+      60% {transform: translateY(-5px);}
     }
   </style>
 </head>
 <body>
 
-<div id="canvas-container">
-  <canvas id="canvas"></canvas>
-</div>
+<canvas id="bg-canvas"></canvas>
 
 <section class="hero">
-  <div class="hero-eyebrow reveal">19 апреля</div>
-  <div class="hero-name reveal">Дашуля</div>
-  <div class="hero-sub reveal">С днём рождения, любимая ✨</div>
-  <div class="scroll-hint reveal">листай вниз</div>
+  <div class="hero-sub reveal">19 АПРЕЛЯ</div>
+  <h1 class="hero-name reveal">Дашуля</h1>
+  <div class="hero-sub reveal">С ДНЁМ РОЖДЕНИЯ! ✨</div>
+  <div class="scroll-down">листай вниз</div>
 </section>
 
-<section class="sec-wrap">
-  <div class="sec-title reveal">Наши моменты</div>
-  <div class="photos-grid" id="photosGrid">
-    <!-- Фотографии генерируются скриптом -->
+<section class="section">
+  <h2 class="section-title reveal">Наши моменты</h2>
+  <div class="grid" id="photo-grid">
+    <!-- Фото подгрузятся здесь -->
   </div>
 </section>
 
-<section class="sec-wrap">
-  <div class="letter-card reveal">
-    <div class="letter-text">
-      Дашуля,<br><br>
-      Я люблю тебя — по-настоящему, глубоко, всем сердцем. Каждый день рядом с тобой я понимаю это сильнее.<br><br>
-      Ты красивая. Не просто внешне — ты красива во всём: в том, как думаешь, как заботишься, как смотришь на мир. Ты умная и сильная — сильнее, чем сама, наверное, думаешь.<br><br>
-      Спасибо тебе за то, что веришь в меня. Ты делаешь меня лучше просто тем, что ты есть.<br><br>
-      Я мечтаю провести с тобой всю жизнь — в счастье, в гармонии, в маленьких радостях каждого дня.<br><br>
-      С днём рождения!
-    </div>
-    <div class="letter-sign">Твой Руслан ♥️</div>
+<section class="section">
+  <div class="letter reveal">
+    <p>Дашуля,</p>
+    <p>Я люблю тебя — по-настоящему, глубоко, всем сердцем. Каждый день рядом с тобой я понимаю это сильнее.</p>
+    <p>Ты красивая. Не просто внешне — ты красива во всём: в том, как думаешь, как заботишься, как смотришь на мир. Ты умная и сильная — сильнее, чем сама думаешь.</p>
+    <p>Спасибо тебе за то, что веришь в меня. Ты делаешь меня лучше просто тем, что ты есть.</p>
+    <p>Я мечтаю провести с тобой всю жизнь — в счастье, в гармонии и в маленьких радостях каждого дня.</p>
+    <div class="signature">Твой Руслан ♥️</div>
   </div>
 </section>
 
 <footer class="footer">
-РУСЛАН & ДАША • 2024
+  RUSLAN & DASHA • 2024
 </footer>
 
 <script>
-  // ── ГЕНЕРАЦИЯ ФОТО ──
-  const photosGrid = document.getElementById('photosGrid');
-  const photoCount = 8; // Укажи количество фото
-
-  for (let i = 1; i <= photoCount; i++) {
+  // 1. Генерация фото
+  const grid = document.getElementById('photo-grid');
+  for (let i = 1; i <= 8; i++) {
     const card = document.createElement('div');
-    card.className = 'photo-card reveal';
-    card.innerHTML = `<img src="photo${i}.jpg" alt="Момент ${i}" onerror="this.src='https://via.placeholder.com/600x800/1a001a/ff80d0?text=Photo+${i}'">`;
-    photosGrid.appendChild(card);
+    card.className = 'glass-card reveal';
+    card.innerHTML = `<img src="photo${i}.jpg" alt="Момент" onerror="this.src='https://via.placeholder.com/400x500/1a0025/ff80d0?text=Любимое+Фото'">`;
+    grid.appendChild(card);
   }
 
-  // ── REVEAL ANIMATION ──
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(el => {
-      if (el.isIntersecting) {
-        el.target.classList.add('visible');
+  // 2. Анимация появления (Reveal)
+  const observerOptions = { threshold: 0.1 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }, observerOptions);
 
-  // ── FLOATING LINES BACKGROUND (VANILLA JS) ──
-  const canvas = document.getElementById('canvas');
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Заплатка: если Observer не сработал за 2 секунды, показать всё
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }, 2000);
+
+  // 3. Интерактивный фон (Floating Lines)
+  const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
   const mouse = { x: null, y: null, radius: 150 };
 
-  window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-  window.addEventListener('touchstart', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
-  window.addEventListener('resize', initCanvas);
+  window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+  window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 
-  function initCanvas() {
+  function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     particles = [];
-    let numberOfParticles = (canvas.width * canvas.height) / 9000;
-    for (let i = 0; i < numberOfParticles; i++) {
-      particles.push(new Particle());
-    }
-  }
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2 + 1;
-      this.speedX = (Math.random() - 0.5) * 0.5;
-      this.speedY = (Math.random() - 0.5) * 0.5;
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      if (this.x > canvas.width) this.x = 0;
-      if (this.x < 0) this.x = canvas.width;
-      if (this.y > canvas.height) this.y = 0;
-      if (this.y < 0) this.y = canvas.height;
-
-      // Взаимодействие с мышью
-      let dx = mouse.x - this.x;
-      let dy = mouse.y - this.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < mouse.radius) {
-        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
-        if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
-        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
-        if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
-      }
-    }
-    draw() {
-      ctx.fillStyle = 'rgba(255, 128, 208, 0.5)';
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function connect() {
-    let opacityValue = 1;
-    for (let a = 0; a < particles.length; a++) {
-      for (let b = a; b < particles.length; b++) {
-        let dx = particles[a].x - particles[b].x;
-        let dy = particles[a].y - particles[b].y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 150) {
-          opacityValue = 1 - (distance / 150);
-          ctx.strokeStyle = `rgba(160, 80, 224, ${opacityValue * 0.4})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.stroke();
-        }
-      }
+    let count = (canvas.width * canvas.height) / 15000;
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        svX: (Math.random() - 0.5) * 0.8,
+        svY: (Math.random() - 0.5) * 0.8,
+        size: Math.random() * 2
+      });
     }
   }
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particles.length; i++) {
-      particles[i].update();
-      particles[i].draw\ 
-();
+      let p = particles[i];
+      p.x += p.svX;
+      p.y += p.svY;
+
+      if (p.x < 0 || p.x > canvas.width) p.svX *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.svY *= -1;
+
+      // Связи
+      for (let j = i; j < particles.length; j++) {
+        let p2 = particles[j];
+        let dx = p.x - p2.x;
+        let dy = p.y - p2.y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255, 128, 208, ${0.2 - dist/600})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      }
+
+      // Притяжение к мыши
+      let mdx = mouse.x - p.x;
+      let mdy = mouse.y - p.y;
+      let mdist = Math.sqrt(mdx*mdx + mdy*mdy);
+      if (mdist < mouse.radius) {
+        p.x -= mdx * 0.01;
+        p.y -= mdy * 0.01;
+      }
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fill();
     }
-    connect();
     requestAnimationFrame(animate);
   }
 
-  initCanvas();
+  window.addEventListener('resize', init);
+  init();
   animate();
 </script>
 
