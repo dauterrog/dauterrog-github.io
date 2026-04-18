@@ -6,7 +6,8 @@
   <title>С днём рождения, Дашуля! 🌸</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Округлый и мягкий шрифт Comfortaa -->
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -14,50 +15,36 @@
     :root {
       --pink: #ff80d0;
       --purple: #a050e0;
-      --deep-purple: #8030c8;
-      --mid-purple: #c060f0;
-      --glow-pink: rgba(255,128,208,0.18);
-      --glow-purple: rgba(160,40,180,0.22);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.12);
       --text-main: #f0e8ff;
       --text-muted: #b090c8;
-      --text-dim: #7050a0;
-      --bg: #0d0010;
-      --bg-mid: #130018;
-      --card-bg: rgba(255,200,240,0.05);
-      --card-border: rgba(220,0,220,0.18);
+      --bg: #08000a;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Comfortaa', sans-serif;
       background: var(--bg);
       color: var(--text-main);
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ── PARTICLES ── */
-    #particles {
-      position: fixed; top: 0; left: 0;
-      width: 0%; height: 100%;
-      pointer-events: none; z-index: 0; overflow: hidden;
+    /* ── ИНТЕРАКТИВНЫЙ ФОН (FLOATING LINES) ── */
+    #canvas-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
-    .particle {
-      position: absolute; border-radius: 50%;
-      animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.6; }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-    }
+    canvas { display: block; }
 
     /* ── SCROLL REVEAL ── */
     .reveal {
       opacity: 0;
-      transform: translateY(44px);
-      transition: opacity 0.8s cubic-bezier(.22,1,.36,1),
-                  transform 0.8s cubic-bezier(.22,1,.36,1);
+      transform: translateY(30px);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -67,379 +54,255 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 80px 24px 64px;
+      padding: 0 24px;
       position: relative; z-index: 1;
-      background:
-        radial-gradient(ellipse at 65% 35%, var(--glow-purple) 0%, transparent 60%),
-        radial-gradient(ellipse at 20% 75%, rgba(240,80,160,0.14) 0%, transparent 50%);
     }
     .hero-eyebrow {
-      font-size: 11px; letter-spacing: 4px;
-      text-transform: uppercase; color: #d090f0;
-      margin-bottom: 20px; opacity: 0.8;
+      font-size: 12px; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--pink);
+      margin-bottom: 20px; font-weight: 500;
     }
     .hero-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(60px, 18vw, 120px);
-      font-weight: 300; line-height: 0.95;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #ff80d0 0%, #c060f0 40%, #8040e0 70%, #ff60c0 100%);
+      font-size: clamp(50px, 15vw, 100px);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, var(--pink) 50%, var(--purple) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(255, 128, 208, 0.3));
     }
-    @keyframes shimmer {
-      0%   { filter: brightness(1); }
-      100% { filter: brightness(1.2); }
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 7px 18px; border-radius: 30px;
-      border: 0.5px solid rgba(220,100,220,0.35);
-      background: rgba(180,60,200,0.1);
-      font-size: 11px; letter-spacing: 2px;
-      text-transform: uppercase; color: #e090f8;
-      margin-bottom: 28px;
-    }
-    .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: #e060d0; }
     .hero-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(17px, 4.5vw, 28px);
-      color: #e0a0f0; margin-bottom: 28px; font-weight: 300;
+      font-size: clamp(16px, 4vw, 24px);
+      color: var(--text-muted); font-weight: 300;
     }
-    .hero-msg {
-      max-width: 400px; font-size: 14px;
-      line-height: 1.9; color: var(--text-muted); margin-bottom: 52px;
-    }
-    .scroll-hint {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 8px; color: var(--text-dim);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    }
-    .scroll-arrow {
-      width: 1px; height: 44px;
-      background: linear-gradient(180deg, rgba(200,80,220,0.6), transparent);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 
-    /* ── SECTION COMMON ── */
-    .sec-wrap { position: relative; z-index: 1; padding: 80px 20px; }
-    .photos-bg { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-mid) 50%, var(--bg) 100%); }
-    .letter-bg { background: radial-gradient(ellipse at 50% 50%, rgba(140,30,180,0.14) 0%, transparent 70%); }
-    .sec-label {
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
-      color: #c060d0; text-align: center; margin-bottom: 10px;
-    }
+    /* ── ГАЛЕРЕЯ (ЖИДКОЕ СТЕКЛО) ── */
+    .sec-wrap { position: relative; z-index: 1; padding: 100px 20px; }
     .sec-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(28px, 7vw, 46px); font-weight: 300;
-      text-align: center; margin-bottom: 40px; color: #f0d8ff;
+      font-size: clamp(28px, 6vw, 42px); font-weight: 600;
+      text-align: center; margin-bottom: 50px; color: #fff;
     }
-
-    /* ── PHOTOS ──
-*/
     .photos-grid {
-      display: grid; gap: 10px;
-      max-width: 720px; margin: 0 auto;
-    }
-    /* Desktop — 3 col staggered */
-    @media (min-width: 600px) {
-      .photos-grid { grid-template-columns: repeat(3, 1fr); }
-      .photo-card { aspect-ratio: 2/3; }
-      /* Staggered effect for generated photos */
-      .photos-grid .photo-card:nth-child(3n+2) { margin-top: 28px; } /* 2, 5, 8... */
-      .photos-grid .photo-card:nth-child(3n+1):not(:first-child) { margin-top: -28px; } /* 4, 7, 10... */
-      .photos-grid .photo-card:nth-child(3n) { margin-top: 14px; } /* 3, 6, 9... */
-    }
-    /* Mobile — 2 col */
-    @media (max-width: 599px) {
-      .photos-grid { grid-template-columns: repeat(2, 1fr); }
-      .photo-card { aspect-ratio: 3/4; }
+      display: grid; gap: 20px;
+      max-width: 1000px; margin: 0 auto;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
     .photo-card {
-      border-radius: 16px; overflow: hidden;
-      position: relative; cursor: pointer;
-      background: linear-gradient(145deg, #1e0628, #280830);
-      transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+      position: relative;
+      border-radius: 30px;
+      padding: 12px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.4s ease;
+      overflow: hidden;
     }
-    .photo-card:active { transform: scale(0.97); }
-    @media (min-width: 600px) { .photo-card:hover { transform: scale(1.04); } }
-
-    /* ── PHOTO IMAGE ── */
+    .photo-card:hover { transform: translateY(-10px) scale(1.02); }
     .photo-card img {
       width: 100%; height: 100%;
       object-fit: cover; display: block;
+      border-radius: 22px;
+      /* Эффект стекла поверх фото */
+      filter: contrast(1.1) brightness(0.9);
     }
-    /* placeholder shown when no image */
-    .photo-placeholder {
+    
+    /* Дополнительный слой блеска на стекле */
+    .photo-card::after {
+      content: '';
       position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 10px; padding: 14px; text-align: center;
-      /* Ensure placeholder is visible when image fails to load */
-      background: linear-gradient(145deg, #1e0628, #280830);
-      /* This rule is overridden by JS for initial hidden state */
-    }
-    .photo-ico {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 1px dashed rgba(220,120,255,0.3);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .photo-txt { font-size: 11px; color: rgba(210,160,255,0.45); line-height: 1.5; }
-    .photo-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(100,20,120,0.75) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.3s;
-      display: flex; align-items: flex-end; padding: 12px;
-    }
-    .photo-card:hover .photo-overlay,
-    .photo-card:active .photo-overlay { opacity: 1; }
-    .photo-cap {
-      font-size: 12px; color: #f0c0ff;
-      font-style: italic; font-family: 'Cormorant Garamond', serif;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+      pointer-events: none;
     }
 
-    /* ── LETTER ── */
+    /* ── ПИСЬМО (ЖИДКОЕ СТЕКЛО) ── */
     .letter-card {
-      background: linear-gradient(145deg, rgba(255,200,240,0.05), rgba(180,80,220,0.07));
-      border: 0.5px solid var(--card-border);
-      border-radius: 24px;
-      padding: clamp(28px,6vw,48px) clamp(22px,6vw,40px);
-      position: relative; overflow: hidden;
-      max-width: 580px; margin: 0 auto;
-    }
-    .letter-glow {
-      position: absolute; top: -60px; right: -60px;
-      width: 200px; height: 200px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,80,230,0.13), transparent 70%);
-      pointer-events: none;
-    }
-    .letter-glow2 {
-      position: absolute; bottom: -40px; left: -40px;
-      width: 160px; height: 160px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(240,80,180,0.09), transparent 70%);
-      pointer-events: none;
-    }
-    .letter-top { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-    .letter-line {
-      flex: 1; height: 0.5px;
-      background: linear-gradient(90deg, transparent, rgba(220,100,220,0.4), transparent);
-    }
-    .letter-badge {
-      font-size: 10px; letter-spacing: 3px;
-      text-transform: uppercase; color: #d080f0; white-space: nowrap;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: 40px;
+      padding: clamp(30px, 8vw, 60px);
+      max-width: 700px; margin: 0 auto;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     }
     .letter-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(16px,4vw,19px); line-height: 2;
-      color: #e8d8f8; font-weight: 300;
+      font-size: clamp(16px, 4vw, 20px);
+      line-height: 1.8; color: #fff; font-weight: 300;
     }
     .letter-sign {
-      margin-top: 32px; padding-top: 20px;
-      border-top: 0.5px solid rgba(200,100,220,0.18);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: clamp(20px,5vw,26px);
-      background: linear-gradient(135deg, #ff80d0, #a050e0);
+      margin-top: 40px;
+      font-size: 28px; font-weight: 600;
+      background: linear-gradient(to right, var(--pink), var(--purple));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
-
-    /* ── TIMELINE ── */
-    .tl-inner { max-width: 520px; margin: 0 auto; }
-    .tl-item { display: flex; gap: 20px; margin-bottom: 36px; align-items: flex-start; }
-    .tl-spine {
-      display: flex; flex-direction: column;
-      align-items: center; flex-shrink: 0; width: 14px;
-    }
-    .tl-orb { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-    .tl-orb.n { background: radial-gradient(circle, #d060d0, #8030b0); }
-    .tl-orb.s { background: radial-gradient(circle, #ff80d0, #c040e0); box-shadow: 0 0 10px rgba(240,80,200,0.5); }
-    .tl-vline {
-      width: 1px; flex: 1; min-height: 24px; margin-top: 4px;
-      background: linear-gradient(180deg, rgba(200,80,220,0.35), rgba(140,40,180,0.08));
-    }
-    .tl-date { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #c060d0; margin-bottom: 4px; }
-    .tl-event { font-size: clamp(14px,3.5vw,16px); font-weight: 500; color: #f0d8ff; margin-bottom: 3px; }
-    .tl-note { font-size: clamp(12px,3vw,13px); color: #8060a0; line-height: 1.65; font-style: italic; }
 
     /* ── FOOTER ── */
     .footer {
+      padding: 80px 20px; text-align: center;
       position: relative; z-index: 1;
-      padding: 60px 24px 52px;
-      text-align: center;
-      background: linear-gradient(160deg, #130018 0%, #1a0022 100%);
-      border-top: 0.5px solid rgba(180,60,200,0.12);
-    }
-    .footer-ring {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 56px; height: 56px; border-radius: 50%;
-      border: 0.5px solid rgba(220,100,220,0.28);
-      margin-bottom: 18px; font-size: 18px;
-      background: rgba(180,60,200,0.07);
-    }
-    .footer-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-size: 14px;
-      color: var(--text-dim); margin-bottom: 8px;
-    }
-    .footer-names {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(22px,6vw,28px); font-weight: 300;
-      background: linear-gradient(135deg, #ff80d0, #a050e0);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 14px; letter-spacing: 2px; color: var(--text-dim);
     }
 
-    /* safe area for notched phones */
-    @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .footer { padding-bottom: calc(52px + env(safe-area-inset-bottom)); }
+    /* Убираем лишние элементы, оставляем чистоту */
+    .scroll-hint {
+      position: absolute; bottom: 40px;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
 
-<div id="particles"></div>
+<div id="canvas-container">
+  <canvas id="canvas"></canvas>
+</div>
 
-<!-- ═══════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════ -->
 <section class="hero">
-  <div class="hero-eyebrow reveal">19 апреля · день рождения</div>
+  <div class="hero-eyebrow reveal">19 апреля</div>
   <div class="hero-name reveal">Дашуля</div>
-  <div class="hero-badge reveal"><div class="hero-dot"></div>19 лет<div class="hero-dot"></div></div>
-  <div class="hero-sub reveal">С днём рождения, любимая</div>
-  <p class="hero-msg reveal">Этот маленький сайт — только для тебя.</p>
-  <div class="scroll-hint reveal"><span>листай</span><div class="scroll-arrow"></div></div>
+  <div class="hero-sub reveal">С днём рождения, любимая ✨</div>
+  <div class="scroll-hint reveal">листай вниз</div>
 </section>
 
-<section class="sec-wrap photos-bg">
-  <div class="sec-label reveal">воспоминания</div>
+<section class="sec-wrap">
   <div class="sec-title reveal">Наши моменты</div>
-  <div class="photos-grid" id="photosGridContainer">
-    <!-- Динамические фотографии будут вставлены здесь с помощью JavaScript -->
+  <div class="photos-grid" id="photosGrid">
+    <!-- Фотографии генерируются скриптом -->
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     ПИСЬМО
-═══════════════════════════════════════════ -->
-<section class="sec-wrap letter-bg">
-  <div class="sec-label reveal">только для тебя</div>
-  <div class="sec-title reveal">Письмо</div>
+<section class="sec-wrap">
   <div class="letter-card reveal">
-    <div class="letter-glow"></div>
-    <div class="letter-glow2"></div>
-    <div class="letter-top">
-      <div class="letter-line"></div>
-      <div class="letter-badge">письмо для тебя</div>
-      <div class="letter-line"></div>
-    </div>
     <div class="letter-text">
       Дашуля,<br><br>
       Я люблю тебя — по-настоящему, глубоко, всем сердцем. Каждый день рядом с тобой я понимаю это сильнее.<br><br>
       Ты красивая. Не просто внешне — ты красива во всём: в том, как думаешь, как заботишься, как смотришь на мир. Ты умная и сильная — сильнее, чем сама, наверное, думаешь.<br><br>
-      Спасибо тебе за то, что веришь в меня. Это дорогого стоит — знать, что ты рядом и веришь. Ты делаешь меня лучше просто тем, что ты есть.<br><br>
-      Я мечтаю провести с тобой всю жизнь — в счастье, в гармонии, в маленьких радостях каждого дня. Хочу, чтобы нам всегда было так же хорошо, как бывает нам с тобой в лучшие моменты.<br><br>
-      С днём рождения, моя любимая.
+      Спасибо тебе за то, что веришь в меня. Ты делаешь меня лучше просто тем, что ты есть.<br><br>
+      Я мечтаю провести с тобой всю жизнь — в счастье, в гармонии, в маленьких радостях каждого дня.<br><br>
+      С днём рождения!
     </div>
-    <div class="letter-sign">Твой Руслан ♥</div>
+    <div class="letter-sign">Твой Руслан ♥️</div>
   </div>
 </section>
 
-
 <footer class="footer">
-  <div class="footer-ring reveal">♥</div>
-  <div class="footer-text reveal">сделано с любовью специально для тебя</div>
-  <div class="footer-names reveal">Руслан & Даша</div>
+РУСЛАН & ДАША • 2024
 </footer>
 
 <script>
-  // ── PARTICLES ──
-  const pc = document.getElementById('particles');
-  const colors = [
-    'rgba(255,120,210,0.55)', 'rgba(180,60,220,0.45)',
-    'rgba(240,80,180,0.4)',   'rgba(140,60,240,0.38)',
-    'rgba(255,160,230,0.3)'
-  ];
-  colors.forEach(c => {
-    for (let i = 0; i < 6; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const s = Math.random() * 3.5 + 1.5;
-      p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${c};animation-duration:${Math.random()*16+10}s;animation-delay:${Math.random()*14}s;`;
-      pc.appendChild(p);
-    }
-  });
+  // ── ГЕНЕРАЦИЯ ФОТО ──
+  const photosGrid = document.getElementById('photosGrid');
+  const photoCount = 8; // Укажи количество фото
 
-  // ── TIMELINE ──
+  for (let i = 1; i <= photoCount; i++) {
+    const card = document.createElement('div');
+    card.className = 'photo-card reveal';
+    card.innerHTML = `<img src="photo${i}.jpg" alt="Момент ${i}" onerror="this.src='https://via.placeholder.com/600x800/1a001a/ff80d0?text=Photo+${i}'">`;
+    photosGrid.appendChild(card);
+  }
 
-  // ── SCROLL REVEAL ──
+  // ── REVEAL ANIMATION ──
   const io = new IntersectionObserver(entries => {
     entries.forEach(el => {
       if (el.isIntersecting) {
         el.target.classList.add('visible');
-        io.unobserve(el.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
+  }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+  // ── FLOATING LINES BACKGROUND (VANILLA JS) ──
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  const mouse = { x: null, y: null, radius: 150 };
 
-  // ── DYNAMIC PHOTOS ──
-  const photosGridContainer = document.getElementById('photosGridContainer');
-  const maxPhotos = 8; // Максимальное количество фотографий, которые будет искать скрипт (photo1.jpg, photo2.jpg, ..., photo50.jpg)
+  window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+  window.addEventListener('touchstart', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+  window.addEventListener('resize', initCanvas);
 
-  for (let i = 1; i <= maxPhotos; i++) {
-    const photoSrc = `photo${i}.jpg`;
-    const caption = ``; // Можно изменить эту строку, чтобы задать свои подписи
-
-    const photoCardDiv = document.createElement('div');
-    photoCardDiv.className = 'photo-card reveal';
-    photoCardDiv.setAttribute('data-caption', caption);
-    photoCardDiv.style.transitionDelay = `${(i - 1) * 0.07}s`;
-
-    const imgElement = document.createElement('img');
-    imgElement.src = photoSrc;
-    imgElement.alt = caption;
-    // Если изображение не загрузится, скрыть img и показать заглушку
-    imgElement.onerror = function() {
-      this.style.display = 'none'; // Скрыть сломанное изображение
-      const placeholder = this.parentNode.querySelector('.photo-placeholder');
-      if (placeholder) {
-        placeholder.style.display = 'flex'; // Показать заглушку
-        placeholder.querySelector('.photo-txt').textContent = `${caption} (не найдено)`;
-      }
-    };
-
-    const placeholderDiv = document.createElement('div');
-    placeholderDiv.className = 'photo-placeholder';
-    placeholderDiv.style.display = 'none'; // Изначально заглушка скрыта
-    placeholderDiv.innerHTML = `
-      <div class="photo-ico">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <rect x="1" y="3" width="14" height="10" rx="2" stroke="rgba(220,120,255,0.38)" stroke-width="1.2"/>
-          <circle cx="8" cy="8" r="2.5" stroke="rgba(220,120,255,0.38)" stroke-width="1.2"/>
-        </svg>
-      </div>
-      <div class="photo-txt">${caption}</div>
-    `;
-
-    const overlayDiv = document.createElement('div');
-    overlayDiv.className = 'photo-overlay';
-    overlayDiv.innerHTML = `<div class="photo-cap">${caption}</div>`;
-
-    photoCardDiv.appendChild(imgElement);
-    photoCardDiv.appendChild(placeholderDiv);
-    photoCardDiv.appendChild(overlayDiv);
-
-    photosGridContainer.appendChild(photoCardDiv);
-
-    // Добавляем элемент для анимации при прокрутке
-    io.observe(photoCardDiv);
+  function initCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles = [];
+    let numberOfParticles = (canvas.width * canvas.height) / 9000;
+    for (let i = 0; i < numberOfParticles; i++) {
+      particles.push(new Particle());
+    }
   }
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x > canvas.width) this.x = 0;
+      if (this.x < 0) this.x = canvas.width;
+      if (this.y > canvas.height) this.y = 0;
+      if (this.y < 0) this.y = canvas.height;
+
+      // Взаимодействие с мышью
+      let dx = mouse.x - this.x;
+      let dy = mouse.y - this.y;
+      let distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < mouse.radius) {
+        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+        if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+        if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+      }
+    }
+    draw() {
+      ctx.fillStyle = 'rgba(255, 128, 208, 0.5)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function connect() {
+    let opacityValue = 1;
+    for (let a = 0; a < particles.length; a++) {
+      for (let b = a; b < particles.length; b++) {
+        let dx = particles[a].x - particles[b].x;
+        let dy = particles[a].y - particles[b].y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 150) {
+          opacityValue = 1 - (distance / 150);
+          ctx.strokeStyle = `rgba(160, 80, 224, ${opacityValue * 0.4})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw\ 
+();
+    }
+    connect();
+    requestAnimationFrame(animate);
+  }
+
+  initCanvas();
+  animate();
 </script>
 
 </body>
