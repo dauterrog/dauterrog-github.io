@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Dashulya • iOS 26 Edition</title>
+  <title>Happy Birthday!!!</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #050008;
-      --pink: #ff00bf;
-      --purple: #9d00ff;
-      --white: #ffffff;
-      --glass: rgba(255, 255, 255, 0.02);
-      --glass-border: rgba(255, 255, 255, 0.15);
+      --bg: #030005;
+      --accent: #ff8df0;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-stroke: rgba(255, 255, 255, 0.15);
+      --glass-shine: rgba(255, 255, 255, 0.2);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,26 +27,43 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── ФОН "FLOATING RIBBONS" (iOS 26 Style) ── */
-    #canvas-container {
+    /* ── ФОН "FLOATING LINES" ── */
+    #canvas-bg {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -1;
-      background: #050008;
+      background: radial-gradient(circle at 50% 50%, #150020 0%, #030005 100%);
     }
 
     /* ── ГИПЕР-СТЕКЛО (LIQUID GLASS) ── */
     .liquid-glass {
-      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01));
-      backdrop-filter: blur(50px) saturate(200%) brightness(1.2);
-      -webkit-backdrop-filter: blur(50px) saturate(200%) brightness(1.2);
-      border: 1px solid var(--glass-border);
-      border-radius: 44px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+      -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+      border: 1px solid var(--glass-stroke);
+      border-radius: 40px;
       position: relative;
+      overflow: hidden;
       box-shadow: 
-        inset 0 0 20px rgba(255, 255, 255, 0.05),
-        0 25px 50px rgba(0,0,0,0.5);
+        inset 0 1px 1px var(--glass-shine),
+        0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── СЕКЦИИ ── */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
     .hero {
@@ -60,39 +76,47 @@
     }
 
     .hero-title {
-      font-size: clamp(50px, 15vw, 110px);
+      font-size: clamp(48px, 15vw, 110px);
       font-weight: 700;
-      background: linear-gradient(180deg, #fff 40%, var(--pink) 100%);
+      letter-spacing: -2px;
+      background: linear-gradient(180deg, #fff 30%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
-      filter: drop-shadow(0 0 30px rgba(255, 0, 191, 0.4));
+      margin-bottom: 10px;
+      filter: drop-shadow(0 10px 20px rgba(255, 141, 240, 0.3));
     }
 
     .hero-tag {
       font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 8px;
-      color: var(--pink);
-      font-weight: 700;
+      letter-spacing: 6px;
+      color: var(--accent);
+      opacity: 0.8;
     }
 
-    /* ── СЕКЦИЯ С ФОТО ── */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 100px 24px;
+    /* ── ГАЛЕРЕЯ ── */
+    .section-title {
+      font-size: 32px;
+      text-align: center;
+      margin-bottom: 50px;
+      font-weight: 300;
     }
 
     .photo-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 30px;
+      padding-bottom: 100px;
     }
 
     .photo-card {
-      padding: 15px;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 12px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .photo-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--accent);
     }
 
     .photo-card img {
@@ -100,193 +124,178 @@
       aspect-ratio: 4/5;
       object-fit: cover;
       border-radius: 30px;
-      filter: contrast(1.1) brightness(1.1);
-    }
-
-    .photo-card:hover {
-      transform: translateY(-15px) rotate(1deg);
+      display: block;
     }
 
     /* ── ПИСЬМО ── */
     .letter {
-      padding: clamp(30px, 8vw, 80px);
-      margin-top: 50px;
-      font-size: clamp(16px, 4vw, 22px);
+      padding: 60px;
+      margin-bottom: 100px;
       line-height: 1.8;
+      font-size: 18px;
       font-weight: 300;
     }
 
+    .letter b { color: var(--accent); }
+
     .signature {
-      margin-top: 50px;
-      font-size: 32px;
+      margin-top: 40px;
+      font-size: 28px;
       font-weight: 700;
-      color: var(--pink);
-      text-shadow: 0 0 20px rgba(255, 0, 191, 0.5);
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    /* ── REVEAL ── */
+    /* ── АНИМАЦИЯ ПОЯВЛЕНИЯ ── */
     .reveal {
       opacity: 0;
-      transform: translateY(50px);
+      transform: translateY(40px);
       transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .reveal.active {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .scroll-hint {
-        position: absolute; bottom: 30px; opacity: 0.5;
-        font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
     }
+
   </style>
 </head>
 <body>
 
-<div id="canvas-container">
-  <canvas id="flow-canvas"></canvas>
-</div>
+<canvas id="canvas-bg"></canvas>
 
 <section class="hero container">
-  <div class="hero-tag reveal">19 April • 2026</div>
+  <div class="hero-tag reveal">April 19, 2026</div>
   <h1 class="hero-title reveal">Дашуля</h1>
-  <div class="hero-tag reveal" style="color:#fff; opacity: 0.6;">Special Birthday Edition</div>
-  <div class="scroll-hint">scroll to explore</div>
+  <div class="hero-tag reveal" style="color: #fff">С Днём Рождения, любимая ✨</div>
+  <div class="scroll-indicator"></div>
 </section>
 
-<section class="container">
-  <div class="photo-grid" id="grid">
-    <!-- Сгенерировано -->
+<section class="container" style="padding: 100px 0;">
+  <h2 class="section-title reveal">Наши воспоминания</h2>
+  <div class="photo-grid" id="photoGrid">
+    <!-- Сгенерировано скриптом -->
   </div>
 </section>
 
 <section class="container">
   <div class="letter liquid-glass reveal">
     <p>Дашуля,</p><br>
-    <p>Этот сайт — маленькая цифровая вселенная, созданная только для тебя. Я хотел, чтобы она была такой же красивой и глубокой, как ты.</p><br>
-    <p>С днём рождения! Пусть твоя жизнь будет похожа на этот свет — такая же яркая, плавная и вдохновляющая. Я рядом и всегда верю в тебя.</p>
+    <p>Я люблю тебя — по-настоящему, глубоко и всем сердцем. Каждый новый день рядом с тобой лишь подтверждает это чувство. Ты — мой главный источник вдохновения.</p><br>
+    <p>Ты невероятно <b>красивая</b>, и я говорю не только про внешность. Твоя сила, твой ум и то, как ты заботишься о близких, делают тебя уникальной.</p><br>
+    <p>Спасибо за твою веру в меня. Это дает мне силы расти и становиться лучше. Я мечтаю, чтобы наша жизнь была наполнена такими же яркими и теплыми моментами, как те, что мы уже прожили вместе.</p>
     <div class="signature">Твой Руслан ♥️</div>
   </div>
 </section>
 
-<footer style="padding: 100px; text-align: center; opacity: 0.2; font-size: 12px; letter-spacing: 5px;">
-    FOREVER & ALWAYS • 2026
+<footer style="text-align:center; padding: 50px; opacity:0.3; letter-spacing:4px; font-size:10px;">
+  BY RUSLAN • With Love
 </footer>
 
 <script>
-  // 1. ГЕНЕРАЦИЯ ФОТО
-  const grid = document.getElementById('grid');
-  for(let i=1; i<=6; i++) {
+  // 1. ГЕНЕРАЦИЯ ФОТОГРАФИЙ
+  const photoGrid = document.getElementById('photoGrid');
+  for(let i=1; i<=8; i++) {
     const card = document.createElement('div');
     card.className = 'photo-card liquid-glass reveal';
-    card.innerHTML = `<img src="photo${i}.jpg" alt="Moment" onerror="this.src='https://via.placeholder.com/600x800/100015/ff00bf?text=Memory'">`;
-    grid.appendChild(card);
+    card.innerHTML = `<img src="photo${i}.jpg" alt="Moment" onerror="this.src='https://via.placeholder.com/400x500/150020/ff8df0?text=Moments'">`;
+    photoGrid.appendChild(card);
   }
 
-  // 2. REVEAL
-  const reveal = () => {
-    document.querySelectorAll('.reveal').forEach(el => {
-      if(el.getBoundingClientRect().top < window.innerHeight * 0.85) el.classList.add('active');
+  // 2. АНИМАЦИЯ ПРИ СКРОЛЛЕ
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealOnScroll = () => {
+    revealElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85) {
+        el.classList.add('active');
+      }
     });
   };
-  window.addEventListener('scroll', reveal);
-  reveal();
+  window.addEventListener('scroll', revealOnScroll);
+  revealOnScroll(); // Запуск при старте
 
-  // 3. FLOWING LINES (RIBBONS) - Точная копия стиля с картинки
-  const canvas = document.getElementById('flow-canvas');
+  // 3. ФОН FLOATING LINES (LIQUID MOTION)
+  const canvas = document.getElementById('canvas-bg');
   const ctx = canvas.getContext('2d');
-  
-  let lines = [];
-  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let dots = [];
+  const mouse = { x: -100, y: -100 };
 
   window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
   window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
 
-  class Line {
-    constructor(color, offset) {
-      this.color = color;
-      this.offset = offset;
-      this.nodes = [];
-      this.count = 5; // Количество узлов в ленте
-      for (let i = 0; i <= this.count; i++) {
-        this.nodes.push({
-          x: (window.innerWidth / this.count
- 
-) * i,
-          y: window.innerHeight / 2,
-          originalY: window.innerHeight / 2,
-          angle: Math.random() * Math.PI * 2,
-          speed: 0.01 + Math.random() * 0.02
-        });
-      }
-    }
-
-    update() {
-      this.nodes.forEach((n, i) => {
-        n.angle += n.speed;
-        // Волнообразное движение
-        let wave = Math.sin(n.angle + this.offset) * 100;
-        // Реакция на мышь
-        let dx = mouse.x - n.x;
-        let dy = mouse.y - n.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        let push = Math.max(0, (300 - dist) / 3);
-        
-        n.y = n.originalY + wave + (dy > 0 ? -push : push);
-      });
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.moveTo(this.nodes[0].x, this.nodes[0].y);
-      
-      for (let i = 0; i < this.nodes.length - 1; i++) {
-        let p1 = this.nodes[i];
-        let p2 = this.nodes[i+1];
-        let midX = (p1.x + p2.x) / 2;
-        let midY = (p1.y + p2.y) / 2;
-        ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
-      }
-      
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = this.color;
-      ctx.strokeStyle = this.color;
-      ctx.lineWidth = 3;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    }
-  }
-
   function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    lines = [];
-    const colors = ['#ff00bf', '#9d00ff', '#ffffff', '#ff00bf', '#ffffff'];
-    for(let i=0; i<12; i++) {
-      lines.push(new Line(colors[i % colors.length], i * 0.5));
+    dots = [];
+    const count = (canvas.width * canvas.height) / 18000;
+    for (let i = 0; i < count; i++) {
+      dots.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 2 + 1
+      });
     }
   }
 
-  function animate() {
-    // Полупрозрачная очистка для шлейфа (опционально)
-    ctx.fillStyle = 'rgba(5, 0, 8, 0.2)'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.globalCompositeOperation = 'lighter'; // Эффект свечения при пересечении
-    lines.forEach(l => {
-      l.update();
-      l.draw();
+    dots.forEach((d, index) => {
+      d.x += d.vx;
+      d.y += d.vy;
+      
+      if (d.x < 0 || d.x > canvas.width) d.vx *= -1;
+      if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+
+      // Магнитизм к мыши
+      let dx = mouse.x - d.x;
+      let dy = mouse.y - d.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 200) {
+        d.x += dx * 0.02;
+        d.y += dy * 0.02;
+      }
+
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255, 141, 240, 0.4)';
+      ctx.fill();
+
+      for (let j = index + 1; j < dots.length; j++) {
+        let d2 = dots[j];
+        let dx2 = d.x - d2.x;
+        let dy2 = d.y - d2.y;
+        let dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+
+        if (dist2 < 150) {
+          ctx.beginPath();
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(160, 80, 240, ${1 - dist2/150})`;
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d2.x, d2.y);
+          ctx.stroke();
+        }
+      }
     });
-    ctx.globalCompositeOperation = 'source-over';
-    
-    requestAnimationFrame(animate);
+    requestAnimationFrame(draw);
   }
 
   window.addEventListener('resize', init);
   init();
-  animate();
+  draw();
 </script>
 
 </body>
 </html>
-
